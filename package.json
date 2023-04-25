@@ -1,0 +1,14 @@
+{
+  "name": "learn-scaffold",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "bitscaffold": "github:bitovi/bitscaffold#b9e9b418a6adec1f3b18e0cdd465771d9df146c0",
+    "koa": "^2.14.2"
+  }
+}
