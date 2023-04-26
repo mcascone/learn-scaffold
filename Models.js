@@ -8,7 +8,7 @@ export const Player = {
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
   },
-  belongsTo: [{ target: "Team" }],
+  belongsTo: [{ target: "Team", options: { as: "team" } }],
 };
 
 export const Team = {

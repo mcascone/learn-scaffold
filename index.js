@@ -1,5 +1,10 @@
 import Koa from "koa";
 import path from "path";
+
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 import { Scaffold, DataTypes } from "bitscaffold";
 import { Player, Team } from "./Models.js";
 
@@ -12,7 +17,7 @@ const User = {
 };
 
 const app = new Koa();
-const scaffold = new Scaffold([Player, Team], {
+const scaffold = new Scaffold([Player, Team, User], {
   name: "Scaffold Demo",
   prefix: "/api",
   db: {
