@@ -1,0 +1,16 @@
+services:
+  app:
+    container_name: learn-scaffold
+    build: .
+    restart: always
+
+    # Specify a .env file for credentials
+    # the `AWS_INSTANCE_URL` environment variable will be prepended to that file
+    # env_file: .env
+
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+
+    ports:
+      - 3000:3000
