@@ -8,8 +8,8 @@ services:
     # the `AWS_INSTANCE_URL` environment variable will be prepended to that file
     # env_file: .env
 
-    # volumes:
-    #   - .:/app
+    volumes:
+      - ./example.sqlite:/app/example.sqlite
     #   - /app/node_modules
 
     ports:

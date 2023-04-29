@@ -1,20 +1,15 @@
-FROM node:18-alpine as base
+FROM node:alpine as base
 
-ARG PORT=3000
-
-ENV NODE_ENV=dev
+ENV PORT=3000 \
+  NODE_ENV=dev
 
 WORKDIR /app
 
-COPY package* .
+COPY package*.json ./
 
-RUN npm install --omit=dev
+RUN npm ci --only=production
 
-FROM base as build
-
-COPY *.js .
-
-FROM build as final
+COPY *.js ./
 
 EXPOSE $PORT
 
