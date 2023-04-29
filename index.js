@@ -1,9 +1,8 @@
+import "core-js/stable/index.js";
+import "regenerator-runtime/runtime.js";
+
 import Koa from "koa";
 import path from "path";
-
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 import { Scaffold, DataTypes } from "bitscaffold";
 import { Player, Team } from "./Models.js";
@@ -20,18 +19,28 @@ const app = new Koa();
 const scaffold = new Scaffold([Player, Team, User], {
   name: "Scaffold Demo",
   prefix: "/api",
-  db: {
+  database: {
     dialect: "sqlite",
-    storage: new URL("example.sqlite", import.meta.url),
+    storage: "./example.sqlite",
   },
+});
+
+app.use(async (ctx, next) => {
+  if (ctx.path.startsWith('/api')) {
+    ctx.type = 'application/json';
+    await scaffold.middleware.allModels.all(ctx, next);
+  } else {
+    ctx.body = "Hello From Koa";
+  }
 });
 
 app.use(scaffold.middleware.allModels.all);
 
-app.use(async (ctx) => {
-  ctx.body = "Hello From Koa";
-});
+(async() => {
+  // Create the database
+  await scaffold.createDatabase();
 
-app.listen(3000, () => {
-  console.log("Started on port 3000");
-});
+  app.listen(3000, () => {
+    console.log("Started on port 3000");
+  });
+})();
