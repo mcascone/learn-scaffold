@@ -1,16 +1,32 @@
 services:
-  app:
-    container_name: learn-scaffold
-    build: .
-    restart: always
-
-    # Specify a .env file for credentials
-    # the `AWS_INSTANCE_URL` environment variable will be prepended to that file
-    # env_file: .env
-
-    volumes:
-      - ./example.sqlite:/app/example.sqlite
-    #   - /app/node_modules
-
+  postgresql:
+    image: postgres:13
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: test_db
     ports:
-      - 3000:3000
+      - "5432:5432"
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - app-network
+
+volumes:
+  postgresql-data:
+
+networks:
+  app-network:
+    driver: bridge

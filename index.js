@@ -16,31 +16,27 @@ const User = {
 };
 
 const app = new Koa();
+
 const scaffold = new Scaffold([Player, Team, User], {
   name: "Scaffold Demo",
   prefix: "/api",
   database: {
-    dialect: "sqlite",
-    storage: "./example.sqlite",
+    dialect: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "postgres",
+    password: "mysecretpassword",
   },
-});
-
-app.use(async (ctx, next) => {
-  if (ctx.path.startsWith('/api')) {
-    ctx.type = 'application/json';
-    await scaffold.middleware.allModels.all(ctx, next);
-  } else {
-    ctx.body = "Hello From Koa";
-  }
 });
 
 app.use(scaffold.middleware.allModels.all);
 
-(async() => {
-  // Create the database
-  await scaffold.createDatabase();
+await scaffold.createDatabase();
+
+app.use(async (ctx) => {
+    ctx.body = "Hello From Koa";
+});
 
   app.listen(3000, () => {
     console.log("Started on port 3000");
   });
-})();
