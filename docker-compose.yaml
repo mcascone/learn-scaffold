@@ -1,44 +1,58 @@
-services:
-  postgresql:
-    image: postgres:13
-    container_name: postgresql
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: test_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgresql-data:/var/lib/postgresql/data
-    networks:
-      - app-network
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - "5050:80"
-    networks:
-      - app-network
-
-  learn-scaffold:
-    build: .
-    container_name: learn-scaffold
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgresql://postgres:mysecretpassword@postgresql:5432/test_db
-    depends_on:
-      - postgresql
-    networks:
-      - app-network
-
-volumes:
-  postgresql-data:
-
 networks:
-  app-network:
-    driver: bridge
+  learn_scaffold_network: {}
+
+services:
+  db:
+    image: postgres
+    container_name: learn_scaffold_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    networks:
+      - learn_scaffold_network
+
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   container_name: pgadmin
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
+  #     PGADMIN_DEFAULT_PASSWORD: root
+  #   ports:
+  #     - "5050:80"
+  #   networks:
+  #     - learn_scaffold_network
+
+  api:
+    build: .
+    restart: always
+    container_name: learn_scaffold_api
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 3000:3000
+    volumes:
+      - /app/node_modules
+    environment:
+      PORT: ${API_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: learn_scaffold_db
+    networks:
+      - learn_scaffold_network
+
+# volumes:
+#   postgresql-data:
+
+# networks:
+#   app-network:
+#     driver: bridge

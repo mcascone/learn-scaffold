@@ -1,11 +1,13 @@
 // import "core-js/stable/index.js";
 // import "regenerator-runtime/runtime.js";
 
-import Koa from "koa";
-import path from "path";
+import Koa from "koa"
+import dotenv from 'dotenv'
 
 import { Scaffold, DataTypes } from "bitscaffold";
 import { Player, Team } from "./Models.js";
+
+dotenv.config()
 
 const User = {
   name: "User",
@@ -22,10 +24,12 @@ const scaffold = new Scaffold([Player, Team, User], {
   prefix: "/api",
   database: {
     dialect: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "postgres",
-    password: "mysecretpassword",
+    host: process.env.DB_HOST ?? 'localhost',
+    port: Number(process.env.DB_PORT) ?? 5432,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    logging: false
   },
 });
 
