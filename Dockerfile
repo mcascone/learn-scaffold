@@ -1,6 +1,7 @@
-FROM node:14-bullseye as base
-RUN apt-get update && apt-get upgrade -y
+FROM node:18-alpine as base
+# RUN apt-get update && apt-get upgrade -y
 # RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
+RUN npm install -g npm@9.6.6
 
 ENV PORT=3000
 ENV NODE_ENV=production
@@ -10,7 +11,7 @@ ENV OWNER='node:node'
 FROM base as build
 WORKDIR /app
 COPY package*.json .
-RUN npm install --only=production
+RUN npm ci --omit=dev
 
 FROM build as release
 WORKDIR /app/node_modules
