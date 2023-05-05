@@ -1,5 +1,5 @@
-import "core-js/stable/index.js";
-import "regenerator-runtime/runtime.js";
+// import "core-js/stable/index.js";
+// import "regenerator-runtime/runtime.js";
 
 import Koa from "koa";
 import path from "path";
