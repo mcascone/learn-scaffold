@@ -2,10 +2,10 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}-pgadmin
+  name: pgadmin
 spec:
-  serviceName: {{ .Release.Name }}-pgadmin-svc
-  replicas: {{ .Values.replicaCount }}
+  serviceName: pgadmin-svc
+  replicas: 1
   updateStrategy:
     type: RollingUpdate
   selector:
@@ -18,9 +18,9 @@ spec:
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: pgadmin
+          image: dpage/pgadmin4
+          imagePullPolicy: Always
           env:
             - name: PGADMIN_DEFAULT_EMAIL
               value: admin@admin.com

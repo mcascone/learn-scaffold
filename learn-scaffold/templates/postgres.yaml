@@ -2,13 +2,13 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgresql
+  name: postgresql-db
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: postgresql
-  serviceName: postgresql
+  serviceName: postgresql-svc
   template:
     metadata:
       labels:
@@ -45,7 +45,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgresql
+  name: postgresql-svc
 spec:
   selector:
     app: postgresql

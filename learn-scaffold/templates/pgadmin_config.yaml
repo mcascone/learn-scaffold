@@ -1,8 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
- name: {{ .Release.Name }}-pgadmin-config
- namespace: {{ .Values.namespace }}
+ name: pgadmin-config
 data:
  servers.json: |
    {
