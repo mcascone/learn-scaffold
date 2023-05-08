@@ -7,7 +7,7 @@ import dotenv from 'dotenv'
 import { Scaffold, DataTypes } from "bitscaffold";
 import { Player, Team } from "./Models.js";
 
-dotenv.config()
+dotenv.config();
 
 const User = {
   name: "User",
@@ -41,6 +41,8 @@ app.use(async (ctx) => {
     ctx.body = "Hello From Koa";
 });
 
-  app.listen(3000, () => {
-    console.log("Started on port 3000");
-  });
+const port = process.env.API_PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Started on port ${port}`);
+ });
