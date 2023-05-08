@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - 5432:5432
+      - "${DB_PORT}:${DB_PORT}"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -34,9 +34,6 @@ services:
     build: .
     restart: always
     container_name: learn_scaffold_api
-    depends_on:
-      db:
-        condition: service_healthy
     ports:
       - "${API_PORT}:${API_PORT}"
     volumes:
