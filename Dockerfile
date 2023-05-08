@@ -1,4 +1,8 @@
 FROM node:18-alpine as base
+LABEL org.opencontainers.image.source=https://github.com/mcascone/learn-scaffold
+LABEL org.opencontainers.image.description="Learn Scaffold" 
+LABEL org.opencontainers.image.licenses=MIT
+
 # RUN apt-get update && apt-get upgrade -y
 # RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 RUN npm install -g npm@9.6.6
